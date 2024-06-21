@@ -1,7 +1,7 @@
 
-\documentclass[plainboxedsections, 25pt]{sciposter}
+\documentclass[plainboxedsections]{sciposter}
 
-% A0 portrai dimensions
+% A0 portrait dimensions
 \setlength{\paperwidth}{33.1in}
 \setlength{\paperheight}{46.8in}
 
@@ -20,37 +20,16 @@
 \usepackage{multicol}
 \usepackage{textcomp}
 
-\usepackage{listings}
-\lstset{breaklines}
-\usepackage{subfig}
 \usepackage{graphicx}
-\usepackage[colorlinks = true, allcolors = orange]{hyperref}
-\usepackage{siunitx}
-\usepackage{setspace}
-\usepackage{qrcode}
-
-\usepackage{multirow}
-\definecolor{LightCyan}{rgb}{0.88,1,1}
-
 \usepackage{changepage}  % to adjust margins locally
-% \usepackage{wrapfig}  % wrap figure
-
-\usepackage[numbers]{natbib}
-\usepackage{tikz}
-\usepackage{calligra}
 \usepackage[framemethod=tikz]{mdframed}
-
 \usepackage{centernot}
-
-\newtheorem{definition}{Definition}[section]
-\newtheorem{theorem}{Theorem}[section]
-\newtheorem{proposition}[theorem]{Proposition}
-
-\setmargins[4.5cm]
-\renewcommand{\titlesize}{\fontsize{75}{20}}  %{\Huge} 
+\renewcommand{\titlesize}{\fontsize{80}{20}}  %{\Huge} 
 \renewcommand{\authorsize}{\fontsize{40}{20}} 
 \renewcommand{\instsize}{\fontsize{30}{20}} 
 \renewcommand{\sectionsize}{\Large}
+
+\setmargins[4.5cm]
 
 \newcommand{\highlight}[1]{%
   \colorbox{orange!50}{$\displaystyle#1$}}
@@ -58,24 +37,10 @@
 \newcommand{\highlightB}[1]{%
   \colorbox{charlesBlueL}{$\displaystyle#1$}}
 
-
-% For customized tabular.
-\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
-\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
-
-% to color column 
-\setlength{\columnseprule}{0.5pt}
-\usepackage{colortbl}
-\newcommand{\mc}[2]{\multicolumn{#1}{c}{#2}}
-\definecolor{Gray}{gray}{0.95}
-\newcolumntype{a}{>{\columncolor{Gray}}l}
-\newcolumntype{b}{>{\columncolor{Gray}}c}
-
-
-
-\title{
-  \titlesize \bfseries \vspace*{24pt}
-   PCR TEST SENSITIVITY VS.\ TIME
+\makeatletter
+\title{\titlesize\bfseries
+  \vspace*{24pt}
+  PCR TEST SENSITIVITY VS.\ TIME
 }
 
 \leftlogo[1.5]{img/flatiron-CCM-logo.png}
@@ -89,55 +54,44 @@
   $^\dagger$Center for Computational Mathematics, Flatiron Institute, New York
   \\
   $^*$Joint Biosecurity Centre, UK Health Security Agency, London
+  \vspace*{-48pt}
   \end{center}
 } 
 
-
 \begin{document}
+\conference{\Large \null\hfill {\slshape International Society for Bayesian Analysis} (ISBA), World Meeting, July 2024, Venice}
 
-% \conference{\Large ISBA, July 2024, Venice}
-
-\setlength{\fboxrule}{9pt}
-\setlength{\fboxsep}{16pt}
-\fcolorbox{orange}{white}{
-  \begin{minipage}{0.1in}
-  \end{minipage}
-  \maketitle
-}
-
-% \begin{multicols}{3}
+\setlength{\fboxrule}{6pt}
+\setlength{\fboxsep}{9pt}
+% \fcolorbox{orange}{white}{
+    \maketitle
+    \hspace*{-1in}
+% }
+{\hrule height 4pt}
+\hrule
+\vspace*{12pt}
 \begin{multicols}{2}
 \begin{mdframed}[hidealllines = true, backgroundcolor = Cerulean!10]
 {\large
 \textbf{BACKGROUND:} From peak sensitivity at Covid symptom onset,
 polymerase chain-reaction (PCR) test sensitivity declines over time.
-\\[-0.2in]
-
+\\[12pt]
+Sensitivity is probability of positive test given a patient has Covid.
+\\[24pt]
 \textbf{GOAL:} Develop a Bayesian model to estimate sensitivity vs.\ time.
-\\[-0.2in]
-
+\\[24pt]
 \textbf{FINDINGS:}
 \begin{itemize}
-%
-\item {\bfseries Best fit:} Second-order random walk on log sensitivty with a
-  monotonicity constraint. 
-%
-\item {\bfseries Secod best:} Two-component mixture of regressions on
-  log sensitivity. 
-%
-\item {\bfseries Data:} Swab test positivity for patients hospitalized
-  with Covid. 
-%  
-\item {\bfseries Mixed population:} The RW(2) fit and the mixture fit
-  suggest patients had a mixture of short and long Covid.
-
-\item {\bfseries Other models:} Heterogeneous, first-order
-  random walks, (non-linear) regression, and two-component regression mixtures on
-  the log and log odds scales.
-
-\item {\bfseries Applications:} (1) estimating prevalence from tests,
-  (2) calibrating ``survey'' tests with time-to-hospitalization,
-  time-to-death, and poststratification.
+\item {\bfseries Mixed population:} The fits suggest patients had mixture of short and long Covid.fit
+\item {\bfseries Pharmacokinetics:} Log regression is solution to one-compartment clearance model, with mixture for two populations.
+\end{itemize}
+\vspace*{18pt}
+\textbf{APPLICATIONS:}
+\begin{itemize}
+\item {\bfseries Estimating prevalence} from tests,
+\item {\bfseries Estimating viral load} over time, and
+\item {\bfseries Calibrating test surveys} with time-to-hospitalization,
+  time-to-death, and post-stratification.
 \end{itemize}
 }
 \end{mdframed}
@@ -148,18 +102,18 @@ The data was collected from all patients admitted to one UK hospital with
 Covid in mid-2020.
 
 \begin{center}
-\includegraphics[width=0.35\textwidth]{img/data-counts.pdf}
+  \includegraphics[width=0.45\textwidth]{img/data-counts.pdf}
 \end{center}
 
-\section{Unconstrained MLE}
+\section{Unconstrained MLE with standard errors}
 
-Independent maximum likelihood estimates with $\pm$ standard error
-bars.
+% Independent maximum likelihood estimates with $\pm 1$ standard error bars.
 
 \begin{center}
-\includegraphics[width=0.35\textwidth]{img/mle.pdf}
+\includegraphics[width=0.4\textwidth]{img/mle.pdf}
 \end{center}
 
+\columnbreak
 
 \section{Bayesian Models}
 \newcommand{\ilogit}{\textrm{logit}^{-1}}
@@ -224,23 +178,30 @@ $y_n \sim \textrm{bernoulli}(\exp(\alpha + \beta \cdot t_n));
 %
 \\ \hrule \mbox{}\\[6pt]
 %
-{\bfseries Regression mix (logit):}
-$y_n \sim \textrm{bernoulli}(\ilogit(\lambda \cdot (\alpha_1 + \beta_1 \cdot t_n) + (1 - \lambda) \cdot (\alpha_2 + \beta_2 \cdot t_n)))$
+{\bfseries Regress.\ mix (logit):}
+$y_n \sim \textrm{bernoulli}(\lambda \cdot \ilogit(\alpha_1 + \beta_1 \cdot t_n) + (1 - \lambda) \cdot \ilogit(\alpha_2 + \beta_2 \cdot t_n)))$
 \\[2pt]
-\null\qquad\qquad\qquad\qquad $\lambda \sim \textrm{beta}(2, 2);
-\quad \alpha_k, \beta_k \sim \textrm{normal}(0, 1);
+\null\qquad\qquad\qquad\qquad $\lambda \sim \textrm{beta}(2, 2); 
+\quad \alpha_k, \beta_k \sim \textrm{normal}(0, 1); 
 \quad \beta_k < 0$
+\\[12pt]
+{\bfseries Regress.\ mix (logit):}
+$y_n \sim \textrm{bernoulli}(\lambda \cdot \exp(\alpha_1 + \beta_1 \cdot t_n) + (1 - \lambda) \cdot \exp(\alpha_2 + \beta_2 \cdot t_n))$
+\\[2pt]
+\null\qquad\qquad\qquad\qquad $\lambda \sim \textrm{beta}(2, 2); 
+\quad \alpha_k, \beta_k \sim \textrm{normal}(0, 1); 
+\quad \alpha_k, \beta_k < 0.$
 
 
 
-
-\section{Model Comparison}
+\section{Model comparison with cross-validation}
 
 Approximate leave-one-out cross-validation estimates of expected log
 predictive density (ELPD) differences plus standard
 errors of differences.  Estimated using Stan's \texttt{loo} package.
 \vspace*{12pt}
 \begin{center}
+\renewcommand{\arraystretch}{1.4}
 \begin{tabular}{ll|rr}
 \hline
 Model & Scale & ELPD (diff) & standard error (diff)
@@ -261,16 +222,26 @@ Heterogeneous & \ logit &    -3.0    &   1.9
 \\
 1st-order random walk & \ logit              & -8.4      & 3.8  
 \\
-Regresison mixture & \ logit  & -15.0  &     4.1  
+Regression mixture & \ logit  & -15.0  &     4.1  
 \\
 Regression & \ logit & -81.6   &    9.9
 \\ \hline
 \end{tabular}
+
+\section{Reproducible GitHub repository}
+\null \hfill
+\includegraphics[width=0.15\textwidth]{img/qr-code.pdf}
+\hfill
+\includegraphics[width=0.1\textwidth]{img/stan-logo.png}
+\hfill \null
+\\
+\texttt{\bfseries https://github.com/bob-carpenter/pcr-sensitivity-vs-time}
 \end{center}
 \end{multicols}
-\centering
-\vfill
+
 \section{Visual Model Comparison}
-\includegraphics[width=0.8\textwidth]{img/model-link-comparison.pdf}
+\begin{center}
+  \includegraphics[width=0.7\textwidth]{img/model-link-comparison.pdf}
+\end{center}
 \end{document}
 
