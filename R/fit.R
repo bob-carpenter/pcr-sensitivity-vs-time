@@ -8,7 +8,7 @@ options(digits = 2)
 
 printf <- function(msg, ...) { cat(sprintf(msg, ...)); cat("\n") }
 
-df_sens <- read_excel("../data/PCR pos.xlsx")
+df_sens <- read_excel("../data/pcr-positivity.xlsx")
 days <- df_sens$d_sym_PCR_all
 pos <- df_sens$Res_PCR
 includes <- !is.na(days) & !(days < 0)
@@ -37,7 +37,7 @@ plot <-
   xlab("days since symptom onset") +
   ggtitle("Counts of all tests, positive tests, and negative tests")
 plot
-ggsave("data-counts.pdf", plot, width = 6, height = 3)
+ggsave("data-counts.pdf", plot, width = 6, height = 2.8)
 
 printf("*** tests on first day = %d", sum(days == 0))
 printf("*** tests on second day = %d", sum(days == 1))
@@ -80,7 +80,8 @@ plot_mle_se <-
   ggtitle("Sensitivity MLE +/- 1 std err")
 plot_mle_se
 
-ggsave("mle.pdf", plot_mle_se, width = 6, height = 3)
+ggsave("mle.pdf", plot_mle_se,
+       width = 6, height = 2.7)
 
 
 
@@ -168,35 +169,35 @@ plot_fit <- function(fit, title) {
 
 
 
-sens_mix_fit <- compile_fit('../models/sensitivity/sensitivity-binomial-mix.stan')
+sens_mix_fit <- compile_fit('../stan/sensitivity-binomial-mix.stan')
 plot_fit(sens_mix_fit,
          "Binomial mixture (logit) mean and posterior 90% interval")
 
-sens_mix_log_fit <- compile_fit('../models/sensitivity/sensitivity-binomial-log-mix.stan')
+sens_mix_log_fit <- compile_fit('../stan/sensitivity-binomial-log-mix.stan')
 plot_fit(sens_mix_log_fit,
          "Binomial mixture (log) mean and posterior 90% interval")
 
-sens_shr_fit <- compile_fit('../models/sensitivity/sensitivity-shrink.stan')
+sens_shr_fit <- compile_fit('../stan/sensitivity-shrink.stan')
 plot_fit(sens_shr_fit,
          "Shrinkage model mean and posterior 90% interval")
 
-sens_shr_mono_fit <- compile_fit("../models/sensitivity/sensitivity-shrink-mono.stan")
+sens_shr_mono_fit <- compile_fit("../stan/sensitivity-shrink-mono.stan")
 plot_fit(sens_shr_mono_fit,
   "Monotonic shrinkage model mean and posterior 90% interval")
 
-sens_shr_mono_log_fit <- compile_fit("../models/sensitivity/sensitivity-shrink-mono-log.stan")
+sens_shr_mono_log_fit <- compile_fit("../stan/sensitivity-shrink-mono-log.stan")
 plot_fit(sens_shr_mono_log_fit,
   "Monotonic shrinkage model, log scale, mean and posterior 90% interval")
 
-sens_rw1_fit <- compile_fit('../models/sensitivity/sensitivity-rw1.stan')
+sens_rw1_fit <- compile_fit('../stan/sensitivity-rw1.stan')
 plot_fit(sens_rw1_fit,
   "Monotonic 1st-order random walk mean and posterior 90% interval")
 
-sens_rw1_log_fit <- compile_fit('../models/sensitivity/sensitivity-rw1-log.stan')
+sens_rw1_log_fit <- compile_fit('../stan/sensitivity-rw1-log.stan')
 plot_fit(sens_rw1_log_fit,
   "Monotonic 1st-order log random walk mean and posterior 90% interval")
 
-sens_rw2_log_fit <- compile_fit('../models/sensitivity/sensitivity-rw2-log.stan')
+sens_rw2_log_fit <- compile_fit('../stan/sensitivity-rw2-log.stan')
 plot_fit(sens_rw2_log_fit,
          "Monotonic 2nd-order log random walk mean and posterior 90% interval")
 
@@ -204,7 +205,7 @@ printf("*** posterior mean for sigma = %4.2f", mean(sens_rw1_fit$draws('sigma'))
 printf("*** 90 pct central for sigma = (%4.2f, %4.2f)", quantile(sens_rw1_fit$draws('sigma'), 0.05), quantile(sens_rw1_fit$draws('sigma'), 0.95))
 
 
-sens_rw2_fit <- compile_fit('../models/sensitivity/sensitivity-rw2.stan')
+sens_rw2_fit <- compile_fit('../stan/sensitivity-rw2.stan')
 plot_fit(sens_rw2_fit,
   "Monotonic 2nd-order random walk mean and posterior 90% interval")
 printf("*** 2nd-order RW post mean for sigma = %4.2f",
@@ -214,7 +215,7 @@ printf("*** 90 pct central interval = (%4.2f, %4.2f)",
        quantile(sens_rw2_fit$draws('sigma'), 0.95))
 
 
-sens_binom_log_fit <- compile_fit('../models/sensitivity/sensitivity-binomial-log.stan')
+sens_binom_log_fit <- compile_fit('../stan/sensitivity-binomial-log.stan')
 plot_fit(sens_binom_log_fit,
   "Binomial(log) GLM mean and posterior 90% interval")
 printf("*** post mean alpha binom log = %4.3f", mean(sens_binom_log_fit$draws("alpha")))
@@ -226,9 +227,7 @@ printf("*** central 90 pct = (%4.3f, %4.3f)",
        quantile(sens_binom_log_fit$draws("beta"), 0.05),
        quantile(sens_binom_log_fit$draws("beta"), 0.95))
 
-
-
-sens_binom_logit_fit <- compile_fit('../models/sensitivity/sensitivity-binomial-logit.stan')
+sens_binom_logit_fit <- compile_fit('../stan/sensitivity-binomial-logit.stan')
 plot_fit(sens_binom_logit_fit,
   "Binomial(logit) GLM mean and posterior 90% interval")
 printf("*** post mean for alpha binom logit = %4.3f",
@@ -281,7 +280,7 @@ comparison_plot <-
   xlab("days since symptom onset") +
   ylab("estimated sensitivity")
 ggsave('model-link-comparison.pdf', comparison_plot,
-       width = 12,  height = 6)
+       width = 13.5,  height = 4.75)
 
 df_free <-
   rbind(

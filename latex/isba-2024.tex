@@ -102,7 +102,7 @@ The data was collected from all patients admitted to one UK hospital with
 Covid in mid-2020.  
 
 \begin{center}
-  \includegraphics[width=0.45\textwidth]{img/data-counts.pdf}
+  \includegraphics[width=0.47\textwidth]{img/data-counts.pdf}
 \end{center}
 
 {\small Sue Mallet et al. (2020) ``At what times during infection is SARS-CoV-2 detectable and no longer detectable using RT-PCR-based tests?'' {\slshape BMC Medicine}}
@@ -112,12 +112,12 @@ Covid in mid-2020.
 % Independent maximum likelihood estimates with $\pm 1$ standard error bars.
 
 \begin{center}
-\includegraphics[width=0.4\textwidth]{img/mle.pdf}
+\includegraphics[width=0.475\textwidth]{img/mle.pdf}
 \end{center}
 
 \columnbreak
 
-\section{Bayesian Models}
+\section{Bayesian models}
 \newcommand{\ilogit}{\textrm{logit}^{-1}}
 
 {\bfseries Hetero (logit):} \
@@ -196,7 +196,7 @@ $y_n \sim \textrm{bernoulli}(\lambda \cdot \exp(\alpha_1 + \beta_1 \cdot t_n) + 
 
 
 
-\section{Model comparison with cross-validation}
+\section{Model comparison regression fit}
 
 Approximate leave-one-out cross-validation estimates of expected log
 predictive density (ELPD) differences plus standard
@@ -230,20 +230,33 @@ Regression & \ logit & -81.6   &    9.9
 \\ \hline
 \end{tabular}
 
+\section{Log (mixture) regression coefficient estimates}
+
+{\bf Regression (log)}: $\widehat{\alpha} = -0.01; \quad \widehat{\beta} =
+-0.07$ \hfill \null
+\\[4pt]
+{\bf Regression (log mix):} $\widehat{\alpha}_1 = -0.02; \ \widehat{\beta}_1 = -0.04; \quad
+\widehat{\alpha}_2 = -0.03; \ \widehat{\beta}_2 = -0.18; \quad \widehat{\lambda} = 0.6$ \hfill \null
+
+% log mixture: alpha1 = -.02;  alpha2 = -.03;
+%              beta1 = -0.04, beta2 = -.18
+%              phi = 0.6
+% single component, alpha = -0.01, beta = -0.07
+
+
 \section{Reproducible GitHub repository}
 \null \hfill
-\includegraphics[width=0.15\textwidth]{img/qr-code.pdf}
+\includegraphics[width=0.0825\textwidth]{img/qr-code.pdf}
 \hfill
-\includegraphics[width=0.1\textwidth]{img/stan-logo.png}
+\includegraphics[width=0.065\textwidth]{img/stan-logo.png}
 \hfill \null
 \\
-\texttt{\bfseries https://github.com/bob-carpenter/pcr-sensitivity-vs-time}
+\texttt{https://github.com/bob-carpenter/pcr-sensitivity-vs-time}
 \end{center}
 \end{multicols}
 
-\section{Visual Model Comparison}
-\begin{center}
-  \includegraphics[width=0.7\textwidth]{img/model-link-comparison.pdf}
-\end{center}
+
+\section{Visual model comparison}
+  \includegraphics[width=\textwidth]{img/model-link-comparison.pdf}
 \end{document}
 
